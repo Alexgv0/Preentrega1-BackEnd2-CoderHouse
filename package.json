@@ -1,0 +1,19 @@
+{
+  "name": "preentrega1-backend2-coderhouse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse.git"
+  },
+  "author": "Kevin Alex Muñoz Pascal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse/issues"
+  },
+  "homepage": "https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse#readme",
+  "description": ""
+}
