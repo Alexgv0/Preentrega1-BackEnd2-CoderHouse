@@ -17,17 +17,21 @@ export const createUser = async userData => {
             password: userData?.password ? hashPassword(userData.password) : null,
         };
         if (!newUserData.email) {
-            throw new Error("No se reconoce el email del usuario");
+            throw new Error("No se creo el usuario porque no se reconoce el email del usuario");
+        }
+
+        if (newUserData.age < 0 || newUserData.age > 150) {
+            throw new Error("No se creo el usuario porque la edad no es realista");
         }
         
         const existingUser = await getUserByEmail(newUserData.email);
         if (existingUser) {
-            throw new Error("El usuario ya existe");
+            throw new Error("No se creo el usuario porque ya existe");
         }
 
         const newUser = await User.create(newUserData);
         if (!newUser) {
-            throw new Error("Error al intentar crear el usuario");
+            throw new Error("Error desconocido al intentar crear el usuario");
         }
         return newUser;
     } catch (error) {
@@ -42,7 +46,9 @@ export const createUser = async userData => {
  * @returns {Object|null} - El usuario si se encuentra, o null si no.
  */
 export const getUserByEmail = async email => {
-    return await User.findOne({ email });
+    email = email.toLowerCase();
+    const user = await User.findOne({ email });
+    return user;
 };
 
 /**

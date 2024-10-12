@@ -14,6 +14,17 @@ export const passportAuth =
             if (err) {
                 return errorResponse(res, "Error del servidor", 500);
             }
+
+            // Caso de que el usuario que se intenta crear ya existe
+            if (info?.userExists) {
+                return errorResponse(res, info.message, 409);
+            }
+
+            // Caso de contraseña incorrecta
+            if (info?.status === 401) {
+                return errorResponse(res, info.message, 401);
+            }
+
             if (!user) {
                 if (strategyName === "google") return next();
                 return errorResponse(res, info?.message || "Autenticación fallida", 401);
@@ -47,11 +58,12 @@ export const login = (req, res, next) => {
  */
 export const register = (req, res, next) => {
     passportAuth("register")(req, res, () => {
+
         const token = generateAndSaveToken(req, res);
 
         registerResponse(req, res, next);
 
-        return successResponse(res, { user: req.user, token }, "Registro exitoso");
+        return successResponse(res, { user: req.user, token }, "Registro exitoso", 201);
     });
 };
 
@@ -63,12 +75,11 @@ export const register = (req, res, next) => {
  */
 export const loginOrRegisterGoogle = (req, res, next) => {
     try {
-        
         const config = {
             assignProperty: "user", // Guarda los datos del usuario
             scope: ["profile", "email"],
         };
-        
+
         passportAuth("google", config)(req, res, () => {
             // En caso de cancelar el ingreso redirecciona al login
             if (!req?.user) {

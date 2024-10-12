@@ -39,11 +39,17 @@ document.getElementById("registerForm").addEventListener("submit", async functio
         });
 
         const result = await response.json();
-
-        if (response.ok) {
+        if (result.status === 409) {
+            alert("El usuario que intentas registrar ya existe");
+            console.log("Error: El usuario que intentas registrar ya existe");
+            window.location.href = '/login';
+        } else 
+        if ((result.status === 201) || (result.status === 200)) {
             console.log('Usuario registrado con éxito:', result);
+            window.location.href = '/';
         } else {
             console.error('Error en el registro:', result.message);
+            alert("Error: " + result.message)
         }
     } catch (error) {
         console.error('Error al enviar datos:', error);

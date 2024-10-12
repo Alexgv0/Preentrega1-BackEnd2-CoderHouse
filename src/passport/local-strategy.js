@@ -14,9 +14,13 @@ const localRegister = async (req, email, password, done) => {
 
     try {
         const user = await userServices.getUserByEmail(email);
-        if (user) { // FIXME:
-            console.error("Ya existe el usuario");
-            return done(null, false, { message: "El usuario ya existe" });
+
+        if (user) { 
+            return done(null, false, { message: "El que intentas registrar usuario ya existe", userExists: true});
+        }
+
+        if (userData.age < 0 || userData.age > 150) {
+            return done(null, false, { message: "No se creo el usuario porque la edad no es realista"});
         }
 
         const newUser = await userServices.createUser(userData);
@@ -32,7 +36,7 @@ const localLogin = async (req, email, password, done) => {
         const userLogin = await authServices.login(email, password);
 
         if (!userLogin) {
-            return done(null, false, { message: "Email o contraseña incorrectos" });
+            return done(null, false, { message: "Email o contraseña incorrectos", status: 401});
         }
 
         return done(null, userLogin);
