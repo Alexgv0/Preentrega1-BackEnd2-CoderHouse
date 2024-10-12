@@ -12,6 +12,9 @@ import initMongoDB from "./config/dbConfig.js";
 import routes from "./routes/index.js";
 import handlebarsRouter from "./routes/handlebars.router.js";
 
+import passport from "./config/passportConfig.js";
+
+
 const app = express();
 
 // Iniciacion de Mongo
@@ -28,10 +31,13 @@ app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(srcPath, "views"));
 
-//
-app.use("/api", routes);
-app.use("/", handlebarsRouter);
+// Inicializacion de passport
+app.use(passport.initialize());
+//app.use(passport.session());
 
-app.get("/", (req, res) => res.send("Hello World!"));
+// Routes
+app.use("/api", routes);
+
+app.use("/", handlebarsRouter);
 
 export default app;

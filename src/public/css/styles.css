@@ -61,7 +61,12 @@ button:hover {
     flex-direction: column;
 }
 
-.social-login button {
+.social-login button#localLogin {
+    background-color: green;
+    margin-bottom: 10px;
+}
+
+.social-login button#googleLogin {
     background-color: #db4437; /* Color de Google */
     margin-bottom: 10px;
 }
@@ -79,4 +84,8 @@ button:hover {
 .register-link, .login-link {
     margin-top: 15px;
     text-align: center;
+}
+
+.index-buttons {
+    margin-bottom: 10px;
 }

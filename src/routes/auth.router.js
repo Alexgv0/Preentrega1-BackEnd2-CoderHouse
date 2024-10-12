@@ -1,15 +1,19 @@
-import {Router} from 'express';
-import { userRegister, userLogin, userLogout } from '../controllers/authController.js';
+import express from "express";
+import passport from "passport";
+import { login, loginOrRegisterGoogle, register } from "../controllers/authController.js";
 
-const router = Router();
+const router = express.Router();
+router.use(express.json());
 
-// Ruta para registrar un nuevo usuario
-router.post('/register', userRegister);
+// Local
+router.post("/login", login);
 
-// Ruta para iniciar sesión
-router.post('/login', userLogin);
+router.post("/register", register);
 
-// Ruta para cerrar sesión
-router.post('/logout', userLogout);
+// Google
+router.get("/login-google", loginOrRegisterGoogle);
+
+// Callback URL de Google luego de logueo o registro
+router.get("/oauth2/redirect/accounts.google.com", loginOrRegisterGoogle);
 
 export default router;
